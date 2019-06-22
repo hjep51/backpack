@@ -85,6 +85,18 @@ public class PackTheBag {
 
     private boolean putItemInBag(String item) {
         Path source = Paths.get(item);
+        
+        if(Files.isDirectory(source)) {
+            try {
+                Files.walk(Paths.get(item))
+                        .filter(Files::isRegularFile)
+                        .forEach(e -> putItemInBag(e.toString()));
+                return true;
+            } catch (IOException ex) {
+                Logger.getLogger(PackTheBag.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         String targetPath = item.startsWith(File.separator) ? backpackPath + item : backpackPath + File.separator + item;
         Path target = Paths.get(targetPath);
         try {
