@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.backpack.fxmlcontrollers.MainController">
+   <children>
+      <ListView fx:id="filelistview" layoutX="14.0" layoutY="133.0" prefHeight="585.0" prefWidth="996.0" />
+      <TextField fx:id="targetfolderfield" layoutX="14.0" layoutY="39.0" prefHeight="27.0" prefWidth="853.0" />
+      <CheckBox layoutX="14.0" layoutY="727.0" mnemonicParsing="false" text="Zip Backpack" />
+      <Button fx:id="bagandpack" layoutX="908.0" layoutY="727.0" mnemonicParsing="false" text="Bag and pack" />
+      <Button fx:id="targetfolderbutton" layoutX="873.0" layoutY="39.0" mnemonicParsing="false" text="Select target folder" />
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="996.0" text="Select target folder where to create the Backpack">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Button fx:id="addfoldertobackpack" accessibleHelp="Add folder to Backpack" accessibleText="Add folder to Backpack" contentDisplay="GRAPHIC_ONLY" layoutX="968.0" layoutY="94.0" mnemonicParsing="false" text="+">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@gfx/folder-plus.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label layoutX="14.0" layoutY="111.0" text="Content of Backpack" />
+      <Button fx:id="addfiletobackpack" accessibleHelp="Add file to Backpack" accessibleText="Add file to Backpack" contentDisplay="GRAPHIC_ONLY" layoutX="921.0" layoutY="94.0" mnemonicParsing="false" text="+">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@gfx/file-plus.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label fx:id="statuslabel" layoutX="495.0" layoutY="732.0" text="Label" />
+   </children>
+</AnchorPane>

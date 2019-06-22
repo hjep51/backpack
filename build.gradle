@@ -1,0 +1,21 @@
+plugins {
+  id 'application'
+  id 'org.openjfx.javafxplugin' version '0.0.7'
+}
+
+description = 'Bag and pack files and folder for transport aka backup'
+group = 'backpack'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+javafx {
+    version = "12"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+mainClassName = 'org.backpack.MainApp'
