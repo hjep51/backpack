@@ -11,9 +11,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.backpack.MainApp;
 import org.backpack.io.PackTheBag;
 
 /**
@@ -78,12 +81,20 @@ public class MainController implements Initializable {
         });
         
         bagandpack.setOnAction(e -> {
+            Image image = new Image(MainApp.class.getResource("gfx/ajax-loader.gif").toExternalForm());
+            ImageView spinner = new ImageView(image);
+            spinner.setFitHeight(24);
+            spinner.setFitWidth(24);
+            statuslabel.setGraphic(spinner);
             statuslabel.setText("Packing the bag, please wait");
+            
             PackTheBag bag = new PackTheBag(filelistview.getItems(), targetfolderfield.getText(), true);
             if(bag.pack()) {
                 statuslabel.setText("Bag has been packed");
+                statuslabel.setGraphic(null);
             }else{
                 statuslabel.setText("Ups, bag was lost in transit");
+                statuslabel.setGraphic(null);
             }
         });
     }
