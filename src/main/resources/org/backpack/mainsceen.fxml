@@ -13,7 +13,7 @@
    <children>
       <ListView fx:id="filelistview" layoutX="14.0" layoutY="133.0" prefHeight="585.0" prefWidth="996.0" />
       <TextField fx:id="targetfolderfield" layoutX="14.0" layoutY="39.0" prefHeight="27.0" prefWidth="853.0" />
-      <CheckBox layoutX="14.0" layoutY="727.0" mnemonicParsing="false" text="Zip Backpack" />
+      <CheckBox fx:id="zipit" layoutX="14.0" layoutY="727.0" mnemonicParsing="false" text="Zip Backpack" />
       <Button fx:id="bagandpack" layoutX="908.0" layoutY="727.0" mnemonicParsing="false" text="Bag and pack" />
       <Button fx:id="targetfolderbutton" layoutX="873.0" layoutY="39.0" mnemonicParsing="false" text="Select target folder" />
       <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="996.0" text="Select target folder where to create the Backpack">

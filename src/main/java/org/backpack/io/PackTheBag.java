@@ -54,6 +54,10 @@ public class PackTheBag {
                     }
                 }
                 createBackpackContentFile();
+                if(zipTheBag) {
+                    Zipper zipper = new Zipper();
+                    zipper.compressDirectory(backpackPath, backpackPath + ".zip");
+                }
             } else {
                 return false;
             }

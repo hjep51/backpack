@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -45,6 +46,9 @@ public class MainController implements Initializable {
     
     @FXML
     private Label statuslabel;
+    
+    @FXML
+    private CheckBox zipit;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -88,7 +92,7 @@ public class MainController implements Initializable {
             statuslabel.setGraphic(spinner);
             statuslabel.setText("Packing the bag, please wait");
             
-            PackTheBag bag = new PackTheBag(filelistview.getItems(), targetfolderfield.getText(), true);
+            PackTheBag bag = new PackTheBag(filelistview.getItems(), targetfolderfield.getText(), zipit.isSelected());
             if(bag.pack()) {
                 statuslabel.setText("Bag has been packed");
                 statuslabel.setGraphic(null);
