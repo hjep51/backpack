@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -32,8 +33,7 @@ public class PackTheBag {
     private boolean zipTheBag;
     private String baggeTag;
     private String backpackPath;
-    private List<String> sucssesItems = new LinkedList<>();
-    private List<String> failedItems = new LinkedList<>();
+
 
     public PackTheBag(List<String> content, String baseTarget, boolean zipTheBag) {
         this.content = content;
@@ -46,15 +46,20 @@ public class PackTheBag {
         System.out.println("Got " + content.size() + " items in bag");
         if (content.size() > 0) {
             if (createBackpack()) {
-                for (String item : content) {
+                List<String> items = cleanUpItemList(content);
+                List<String> sucssesItems = new LinkedList<>();
+                List<String> failedItems = new LinkedList<>();
+                
+                for (String item : items) {
+                    System.out.println("Item: " + item);
                     if (putItemInBag(item)) {
                         sucssesItems.add(item);
                     } else {
                         failedItems.add(item);
                     }
                 }
-                createBackpackContentFile();
-                if(zipTheBag) {
+                createBackpackContentFile(sucssesItems, failedItems);
+                if (zipTheBag) {
                     Zipper zipper = new Zipper();
                     zipper.compressDirectory(backpackPath, backpackPath + ".zip");
                 }
@@ -84,19 +89,13 @@ public class PackTheBag {
     }
 
     private boolean putItemInBag(String item) {
+        System.out.println("Item to add: " + item);
+
         Path source = Paths.get(item);
-        
-        if(Files.isDirectory(source)) {
-            try {
-                Files.walk(Paths.get(item))
-                        .filter(Files::isRegularFile)
-                        .forEach(e -> putItemInBag(e.toString()));
-                return true;
-            } catch (IOException ex) {
-                Logger.getLogger(PackTheBag.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if (Files.isDirectory(source)) {
+            return false;
         }
-        
+
         String targetPath = item.startsWith(File.separator) ? backpackPath + item : backpackPath + File.separator + item;
         Path target = Paths.get(targetPath);
         try {
@@ -110,28 +109,50 @@ public class PackTheBag {
             return false;
         }
     }
-    
-    private boolean createBackpackContentFile() {
+
+    private List<String> cleanUpItemList(List<String> items) {
+        List<String> listWithoutDuplicates = items.stream().distinct().collect(Collectors.toList());
+        List<String> itemList = new LinkedList<>();
+        for (String item : listWithoutDuplicates) {
+            Path source = Paths.get(item);
+            if (Files.isDirectory(source)) {
+                try {
+                   List<String> thinges = Files.walk(Paths.get(item)).filter(Files::isRegularFile).map((files) -> files.toString()).collect(Collectors.toList());
+                   itemList.addAll(thinges);
+                } catch (IOException ex) {
+                    Logger.getLogger(PackTheBag.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                itemList.add(item);
+            }
+            
+            itemList = itemList.stream().distinct().filter(e -> !e.toLowerCase().startsWith(backpackPath.toLowerCase())).collect(Collectors.toList());
+        }
+        
+        return itemList;
+    }
+
+    private boolean createBackpackContentFile(List<String> sucssesItems, List<String> failedItems) {
         Charset utf8 = StandardCharsets.UTF_8;
         List<String> list = new LinkedList<>();
         list.add("# Packing list for: " + baggeTag);
         list.add("");
-        if(sucssesItems.size() > 0) {
+        if (sucssesItems.size() > 0) {
             list.add("This items is in the backpack:");
             list.add("");
-            for(String item: sucssesItems) {
-                list .add("* " + item);
+            for (String item : sucssesItems) {
+                list.add("* " + item);
             }
         }
-        if(failedItems.size() > 0) {
+        if (failedItems.size() > 0) {
             list.add("");
             list.add("This items failed to get in the backpack:");
             list.add("");
-            for(String item: failedItems) {
-                list .add("* " + item);
+            for (String item : failedItems) {
+                list.add("* " + item);
             }
         }
-        
+
         Path contentFile = Paths.get(backpackPath + "/packinglist.md");
         try {
             Files.write(contentFile, list, utf8);
@@ -139,7 +160,7 @@ public class PackTheBag {
             Logger.getLogger(PackTheBag.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        
+
         return true;
     }
 }
