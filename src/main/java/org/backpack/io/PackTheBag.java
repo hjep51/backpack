@@ -19,8 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -98,7 +96,6 @@ public class PackTheBag {
             Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
             return true;
         } catch (IOException ex) {
-            Logger.getLogger(PackTheBag.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
@@ -113,7 +110,6 @@ public class PackTheBag {
                     List<String> thinges = Files.walk(Paths.get(item)).filter(Files::isRegularFile).map((files) -> files.toString()).collect(Collectors.toList());
                     itemList.addAll(thinges);
                 } catch (IOException ex) {
-                    Logger.getLogger(PackTheBag.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 itemList.add(item);
@@ -167,7 +163,6 @@ public class PackTheBag {
         try {
             Files.write(contentFile, list, utf8);
         } catch (IOException ex) {
-            Logger.getLogger(PackTheBag.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
 

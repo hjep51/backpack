@@ -11,8 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -50,11 +48,9 @@ public class Zipper {
                     // Close the zip entry.
                     zos.closeEntry();
                 } catch (Exception e) {
-                    Logger.getLogger(Zipper.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
         } catch (IOException e) {
-            Logger.getLogger(Zipper.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
