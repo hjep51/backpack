@@ -6,6 +6,5 @@
 * ~~Check for that we are not adding files from the backpack to the backpack~~
 * Profiles, save lists with files to add to the backpack / output path
 * Upload backpacks to Google drive / Dropbox
-* Make it a standalone app
-  * Linux
-  * Mac
+* Make it a standalone app for Mac and Linux
+* ~~Add machine profile to packinglist.md~~

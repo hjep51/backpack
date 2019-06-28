@@ -7,6 +7,8 @@ package org.backpack.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -14,7 +16,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +35,6 @@ public class PackTheBag {
     private String baggeTag;
     private String backpackPath;
 
-
     public PackTheBag(List<String> content, String baseTarget, boolean zipTheBag) {
         this.content = content;
         this.baseTarget = baseTarget;
@@ -43,22 +43,17 @@ public class PackTheBag {
     }
 
     public boolean pack() {
-        System.out.println("Got " + content.size() + " items in bag");
         if (content.size() > 0) {
             if (createBackpack()) {
                 List<String> items = cleanUpItemList(content);
-                List<String> sucssesItems = new LinkedList<>();
                 List<String> failedItems = new LinkedList<>();
-                
+
                 for (String item : items) {
-                    System.out.println("Item: " + item);
-                    if (putItemInBag(item)) {
-                        sucssesItems.add(item);
-                    } else {
+                    if (!putItemInBag(item)) {
                         failedItems.add(item);
                     }
                 }
-                createBackpackContentFile(sucssesItems, failedItems);
+                createBackpackContentFile(content, failedItems);
                 if (zipTheBag) {
                     Zipper zipper = new Zipper();
                     zipper.compressDirectory(backpackPath, backpackPath + ".zip");
@@ -89,8 +84,6 @@ public class PackTheBag {
     }
 
     private boolean putItemInBag(String item) {
-        System.out.println("Item to add: " + item);
-
         Path source = Paths.get(item);
         if (Files.isDirectory(source)) {
             return false;
@@ -117,36 +110,53 @@ public class PackTheBag {
             Path source = Paths.get(item);
             if (Files.isDirectory(source)) {
                 try {
-                   List<String> thinges = Files.walk(Paths.get(item)).filter(Files::isRegularFile).map((files) -> files.toString()).collect(Collectors.toList());
-                   itemList.addAll(thinges);
+                    List<String> thinges = Files.walk(Paths.get(item)).filter(Files::isRegularFile).map((files) -> files.toString()).collect(Collectors.toList());
+                    itemList.addAll(thinges);
                 } catch (IOException ex) {
                     Logger.getLogger(PackTheBag.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 itemList.add(item);
             }
-            
+
             itemList = itemList.stream().distinct().filter(e -> !e.toLowerCase().startsWith(backpackPath.toLowerCase())).collect(Collectors.toList());
         }
-        
+
         return itemList;
     }
 
-    private boolean createBackpackContentFile(List<String> sucssesItems, List<String> failedItems) {
+    private boolean createBackpackContentFile(List<String> packingList, List<String> failedItems) {
         Charset utf8 = StandardCharsets.UTF_8;
         List<String> list = new LinkedList<>();
         list.add("# Packing list for: " + baggeTag);
         list.add("");
-        if (sucssesItems.size() > 0) {
-            list.add("This items is in the backpack:");
+        list.add("## Machine info");
+        list.add("");
+        list.add("* **OS:** " + System.getProperty("os.name"));
+        list.add("* **OS version:** " + System.getProperty("os.version"));
+        list.add("* **User:** " + System.getProperty("user.name"));
+        
+        try {
+            InetAddress ip;
+            String hostname;
+            ip = InetAddress.getLocalHost();
+            hostname = ip.getHostName();
+            list.add("* **Host:** " + hostname);
+
+        } catch (UnknownHostException e) {
+        }
+        
+        list.add("");
+        if (packingList.size() > 0) {
+            list.add("## Packing list");
             list.add("");
-            for (String item : sucssesItems) {
+            for (String item : packingList) {
                 list.add("* " + item);
             }
         }
         if (failedItems.size() > 0) {
             list.add("");
-            list.add("This items failed to get in the backpack:");
+            list.add("## Items failed to add to the backpack:");
             list.add("");
             for (String item : failedItems) {
                 list.add("* " + item);
