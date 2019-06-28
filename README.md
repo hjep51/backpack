@@ -8,3 +8,9 @@
 * Upload backpacks to Google drive / Dropbox
 * Make it a standalone app for Mac and Linux
 * ~~Add machine profile to packinglist.md~~
+
+## Notes on Gradle plugins
+
+### org.beryx.jlink
+
+Read more about how to use it [here](https://badass-jlink-plugin.beryx.org/releases/latest/)

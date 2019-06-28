@@ -62,7 +62,9 @@ public class MainController implements Initializable {
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             DirectoryChooser directoryChooser = new DirectoryChooser();
             File targetFolder = directoryChooser.showDialog(stage);
-            targetfolderfield.setText(targetFolder.getAbsolutePath());
+            if(targetFolder != null) {
+                targetfolderfield.setText(targetFolder.getAbsolutePath());
+            }
         });
 
         addfiletobackpack.setOnAction(e -> {

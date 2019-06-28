@@ -4,8 +4,15 @@ plugins {
   id 'org.beryx.jlink' version '2.9.4'
 }
 
+mainClassName = "$moduleName/org.backpack.MainApp"
+version = "0.0.1"
+
 repositories {
     mavenCentral()
+}
+
+dependencies {
+
 }
 
 javafx {
@@ -13,11 +20,10 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-mainClassName = "$moduleName/org.backpack.MainApp"
-
 jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    imageZip = file("$buildDir/backpack.zip")
     launcher {
-        name = 'hellofx'
+        name = 'backpack'
     }
 }
