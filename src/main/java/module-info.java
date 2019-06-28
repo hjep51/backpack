@@ -1,4 +1,4 @@
-module backpack {
+module Backpack {
     requires javafx.controls;
     requires javafx.fxml;
 
