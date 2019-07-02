@@ -22,7 +22,8 @@ javafx {
 
 jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    imageZip = file("$buildDir/backpack.zip")
+    imageDir = file("$buildDir/backpack")
+    imageZip = file("$buildDir/backpack-${version}.zip")
     launcher {
         name = 'backpack'
     }
