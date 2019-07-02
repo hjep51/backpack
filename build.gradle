@@ -28,3 +28,10 @@ jlink {
         name = 'backpack'
     }
 }
+
+tasks.jlink.doLast {
+    copy {
+        from('src/main/resources/icons')
+        into("$buildDir/backpack/icons")
+    }
+}
