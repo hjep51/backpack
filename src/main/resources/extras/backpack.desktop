@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Backpack
+Comment=The Smarter Way to backup files and folders
+Exec=/bin/sh "/opt/backpack/bin/Backpack"
+Icon=/opt/backpack/extras/backpack.png
+Categories=Application;Utility;Archiving;Java
+Version=1.0
+Type=Application
+Terminal=0
+
