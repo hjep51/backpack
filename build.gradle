@@ -30,7 +30,7 @@ jlink {
 
 tasks.jlink.doLast {
     copy {
-        from('src/main/resources/icons')
-        into("$buildDir/${imagename}/icons")
+        from('src/main/resources/extras')
+        into("$buildDir/${imagename}/extras")
     }
 }
