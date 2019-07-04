@@ -5,7 +5,6 @@ plugins {
 }
 
 mainClassName = "$moduleName/org.backpack.MainApp"
-version = "0.0.1"
 
 repositories {
     mavenCentral()
@@ -22,16 +21,16 @@ javafx {
 
 jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    imageDir = file("$buildDir/backpack")
-    imageZip = file("$buildDir/backpack-${version}.zip")
+    imageDir = file("$buildDir/${imagename}")
+    imageZip = file("$buildDir/${imagename}-${version}.zip")
     launcher {
-        name = 'backpack'
+        name = 'Backpack'
     }
 }
 
 tasks.jlink.doLast {
     copy {
         from('src/main/resources/icons')
-        into("$buildDir/backpack/icons")
+        into("$buildDir/${imagename}/icons")
     }
 }
